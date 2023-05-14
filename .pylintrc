@@ -1,0 +1,4 @@
+[MASTER]
+extension-pkg-allow=pydantic
+[FORMAT]
+max-line-length=120
