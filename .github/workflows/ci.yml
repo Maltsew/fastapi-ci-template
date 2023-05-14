@@ -44,16 +44,17 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    if:  github.ref == 'refs/heads/main'
     needs: [run_tests]
 
     steps:
-      - name: Login to Docker
-        run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
+    - name: Login to Docker
+      run: echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_LOGIN }} --password-stdin
 
-      - uses: actions/checkout@v3
+    - uses: actions/checkout@v3
 
-      - name: Build Docker image
-        run: docker build -t ${{ vars.DOCKER_PROJECT }}:${GITHUB_REF_NAME} -f Dockerfile .
+    - name: Build Docker image
+      run: docker build -t ${{ vars.DOCKER_PROJECT }}:${GITHUB_REF_NAME} -f Dockerfile .
 
-      - name: Push image to Dockerhub
+    - name: Push image to Dockerhub
       run: docker push ${{ vars.DOCKER_PROJECT }}:${GITHUB_REF_NAME}
